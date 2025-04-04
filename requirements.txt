@@ -5,3 +5,4 @@ pickle-mixin
 keras
 requests
 gunicorn
+scikit-learn
