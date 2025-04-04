@@ -1,0 +1,103 @@
+{
+    "epilepsy_faq": [
+      
+    ],
+    "intents": [
+      {
+        "tag": "symptoms",
+        "patterns": [
+          "What are epilepsy symptoms?",
+          "How do I know if someone has epilepsy?",
+          "What are the signs of a seizure?"
+        ],
+        "responses": [
+          "Common epilepsy symptoms include temporary confusion, staring spells, uncontrollable jerking movements, loss of consciousness, and cognitive/emotional changes. Symptoms vary depending on seizure type."
+        ]
+      },
+      {
+        "tag": "first_aid",
+        "patterns": [
+          "What should I do if someone has a seizure?",
+          "How can I help during a seizure?",
+          "What are first aid steps for epilepsy?"
+        ],
+        "responses": [
+          "Key steps: 1) Stay calm 2) Clear area of hazards 3) Cushion head 4) Time seizure 5) Turn person on side 6) Stay with them 7) Call emergency services if >5 minutes or breathing difficulties"
+        ]
+      },
+      {
+        "tag": "treatment",
+        "patterns": [
+          "How is epilepsy treated?",
+          "What are the treatment options for epilepsy?",
+          "Can epilepsy be cured?"
+        ],
+        "responses": [
+          "Primary treatments: Anti-seizure medications (ASMs), dietary therapy (ketogenic/Modified Atkins), surgery (resection/disconnection), neurostimulation devices (VNS/RNS/DBS), and lifestyle modifications."
+        ]
+      },
+      {
+        "tag": "triggers",
+        "patterns": [
+          "What triggers a seizure?",
+          "Can stress cause epilepsy?",
+          "What should epilepsy patients avoid?"
+        ],
+        "responses": [
+          "Common triggers: Sleep deprivation (most common), stress, alcohol/drug use, flashing lights (photosensitive epilepsy), menstrual cycle changes, missed medications, and illness/fever."
+        ]
+      },
+      {
+        "tag": "diet",
+        "patterns": [
+          "What diet is good for epilepsy?",
+          "Can food affect seizures?",
+          "Is keto diet helpful for epilepsy?"
+        ],
+        "responses": [
+          "Medically supervised ketogenic diet (high fat, low carb) helps control seizures in 30-40% of pediatric cases. Modified Atkins and low glycemic index diets are alternatives for adults."
+        ]
+      },
+      {
+        "tag": "medication",
+        "patterns": [
+          "What are common epilepsy medications?",
+          "Do I have to take epilepsy medicine forever?",
+          "Can missing a dose trigger a seizure?"
+        ],
+        "responses": [
+          "Common ASMs: Levetiracetam, Lamotrigine, Valproate, Carbamazepine. Medication duration depends on seizure control - some may require lifelong treatment. Never stop medication without medical supervision."
+        ]
+      },
+      {
+        "tag": "emergency",
+        "patterns": [
+          "When should I call an ambulance for a seizure?",
+          "What to do if a seizure doesn’t stop?",
+          "How long is too long for a seizure?"
+        ],
+        "responses": [
+          "Seek immediate medical help if: First seizure, >5 minutes duration, repeated seizures, breathing difficulties, injury occurs, or occurs in water. Status epilepticus is a medical emergency."
+        ]
+      },
+      {
+        "tag": "myths",
+        "patterns": [
+          "Is epilepsy contagious?",
+          "Can you swallow your tongue during a seizure?",
+          "Are flashing lights the only trigger?"
+        ],
+        "responses": [
+          "Myth busters: Epilepsy isn't contagious. Physically impossible to swallow your tongue. Only 3-5% have photosensitive epilepsy. People with epilepsy can have normal intelligence and productive lives."
+        ]
+      }
+    ],
+    "disclaimer": "This information combines general medical knowledge and should not replace professional healthcare advice. Always consult a neurologist for personal medical decisions.",
+    "sources": [
+      "WHO Epilepsy Fact Sheets",
+      "Epilepsy Foundation Guidelines",
+      "ILAE Clinical Practice Resources",
+      "NINDS Epilepsy Information Page",
+      "CAAE Clinical Guidelines"
+    ]
+  }

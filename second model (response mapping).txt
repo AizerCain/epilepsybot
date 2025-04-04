@@ -1,0 +1,113 @@
+import os
+import openai
+import json
+import joblib
+import numpy as np
+import tensorflow as tf
+from sklearn.preprocessing import LabelEncoder
+
+# Initialize components
+model = tf.keras.models.load_model('epilepsy_risk_model.h5')
+tokenizer = joblib.load('tokenizer.pkl')
+le = joblib.load('label_encoder.pkl')
+
+# Set your OpenAI API key
+openai.api_key = "sk-your-api-key-here"  # Replace with your actual key
+
+# Medical safety guidelines (prevents hallucinations)
+SAFETY_PROMPT = """You are a medical assistant specialized in epilepsy care. 
+Respond based on these strict guidelines:
+1. Never diagnose - only suggest possibilities
+2. Always recommend consulting a neurologist
+3. Never suggest unverified treatments
+4. Prioritize safety and immediate care for high-risk cases
+5. Use simple, compassionate language
+6. Base responses strictly on the provided risk assessment data:
+
+RISK ASSESSMENT:
+{risk_data}
+
+USER INPUT:
+"{user_input}"
+"""
+
+def get_medical_response(user_input, risk_data):
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4",  # Use "gpt-3.5-turbo" for lower cost
+            messages=[
+                {"role": "system", "content": SAFETY_PROMPT.format(
+                    risk_data=json.dumps(risk_data),
+                    user_input=user_input
+                )},
+                {"role": "user", "content": user_input}
+            ],
+            temperature=0.3,
+            max_tokens=150
+        )
+        return response.choices[0].message['content']
+    except Exception as e:
+        return f"Unable to generate response. Please consult a neurologist immediately. Error: {str(e)}"
+
+def enhanced_analysis(text):
+    # Preprocess and predict
+    cleaned_text = preprocess_text(text)
+    sequence = tokenizer.texts_to_sequences([cleaned_text])
+    padded_seq = pad_sequences(sequence, maxlen=20)
+    prediction = model.predict(padded_seq)
+    risk_level = le.inverse_transform([np.argmax(prediction)])[0]
+    
+    # Create risk data for GPT
+    risk_data = {
+        "risk_level": risk_level,
+        "detected_keywords": [],
+        "confidence": float(np.max(prediction))
+    }
+    
+    # Detect keywords (from previous implementation)
+    risk_data["detected_keywords"] = [
+        kw for kw in knowledge_base["risk_levels"][risk_level]["triggers"] 
+        if kw in cleaned_text
+    ]
+    
+    # Generate safe GPT response
+    gpt_response = get_medical_response(text, risk_data)
+    
+    return {
+        "risk": risk_level,
+        "gpt_response": gpt_response,
+        "safety_warning": "This is not medical advice. Consult a qualified neurologist.",
+        "immediate_actions": get_immediate_actions(risk_level)
+    }
+
+def get_immediate_actions(risk_level):
+    actions = {
+        "High Risk": [
+            "1. Ensure immediate safety",
+            "2. Call emergency services",
+            "3. Stay with the person"
+        ],
+        "Moderate Risk": [
+            "1. Document symptoms",
+            "2. Schedule neurology appointment",
+            "3. Avoid triggers"
+        ],
+        "Low Risk": [
+            "1. Maintain symptom diary",
+            "2. Regular checkups",
+            "3. Educate about epilepsy"
+        ]
+    }
+    return actions.get(risk_level, [])
+
+# Example usage
+if __name__ == "__main__":
+    user_input = "I've been having sudden shaking episodes and sometimes lose awareness"
+    analysis = enhanced_analysis(user_input)
+    
+    print(f"\n⚕️ Risk Assessment: {analysis['risk']}")
+    print("\n🚨 Immediate Actions:")
+    print("\n".join(analysis['immediate_actions']))
+    print("\n💬 Medical Guidance:")
+    print(analysis['gpt_response'])
+    print(f"\n⚠️ {analysis['safety_warning']}")
